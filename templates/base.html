@@ -7,6 +7,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="/static/icons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/static/icons/favicon.svg" />
+    <link rel="shortcut icon" href="/static/icons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="AtomDevStudios" />
+    <link rel="manifest" href="/static/icons/site.webmanifest" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;800&family=Space+Grotesk:wght@300;700&display=swap');
         :root { --neon-green: #00FF41; }
@@ -80,6 +86,11 @@
             {% endif %}
         </div>
     </nav>
+    <div id="install-banner" class="fixed bottom-10 right-10 z-[9999] hidden">
+        <button onclick="installApp()" class="bg-[#00FF41] text-black px-6 py-3 rounded-full font-bold text-xs shadow-2xl animate-bounce">
+            INSTALL ATOM-DEV-STUDIOS
+        </button>
+    </div>
 
     {% block content %}{% endblock %}
 
@@ -108,6 +119,36 @@
                 }
             }, 150);
         });
+    </script>
+
+    <script>
+        let deferredPrompt;
+        const installBanner = document.getElementById('install-banner');
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+
+        // Capture the "plus" icon/install prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBanner.classList.remove('hidden'); // Show your custom button
+        });
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install');
+                    }
+                    installBanner.classList.add('hidden');
+                    deferredPrompt = null;
+                });
+            }
+        }
     </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message as MailMessage
 from werkzeug.utils import secure_filename
@@ -309,6 +309,10 @@ def delete_social(id):
         db.session.commit()
         flash("LINK_TERMINATED: Social connection severed.", "success")
     return redirect(url_for('admin'))
+
+@app.route('/sw.js')
+def serve_sw():
+    return send_from_directory('.', 'sw.js')
 
 if __name__ == '__main__':
     with app.app_context():
