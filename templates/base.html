@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atom Dev Studios </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;800&family=Space+Grotesk:wght@300;700&display=swap');
+        :root { --neon-green: #00FF41; }
+        body { background-color: #050505; color: white; font-family: 'Plus Jakarta Sans', sans-serif; cursor: none; }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+    <div id="loader" class="fixed inset-0 bg-black z-[10000] flex flex-col items-center justify-center font-mono">
+        <div class="text-[#00FF41] mb-2 tracking-[1em] text-xs">ATOM-DEV-STUDIOS</div>
+            <div class="w-48 h-[1px] bg-zinc-800 relative overflow-hidden">
+            <div id="progress" class="absolute h-full bg-[#00FF41] w-0 transition-all duration-700"></div>
+        </div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div id="flash-container" class="fixed top-10 left-1/2 -translate-x-1/2 z-[10001] flex flex-col gap-4 w-full max-w-md px-6">
+                {% for category, message in messages %}
+                    <div class="p-6 rounded-2xl border font-mono text-[10px] tracking-widest uppercase flex justify-between items-center animate-bounce-in
+                        {% if category == 'success' %} bg-black/90 border-[#00FF41] text-[#00FF41] {% else %} bg-black/90 border-red-500 text-red-500 {% endif %}">
+                        <span>{{ message }}</span>
+                        <button onclick="this.parentElement.remove()" class="opacity-50 hover:opacity-100"> [X] </button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="scanlines fixed inset-0 pointer-events-none z-50 opacity-10"></div>
+    <div id="custom-cursor" class="fixed w-4 h-4 bg-[var(--neon-green)] rounded-full pointer-events-none z-[9999] mix-blend-difference transition-transform duration-100 ease-out"></div>
+
+    <nav class="fixed top-0 w-full p-8 flex justify-between items-center z-40 mix-blend-difference">
+        <a href="/" class="flex items-center gap-4">
+            <img src="{{ f.logo_url if f.logo_url else 'https://via.placeholder.com/50' }}" 
+                alt="Atom Logo" 
+                class="h-10 w-10 object-contain rounded-lg border border-[#00FF41]/30">
+        
+            <span class="text-2xl font-black tracking-tighter text-white uppercase">
+                ATOM<span class="text-[var(--neon-green)]">.</span>
+            </span>
+        </a>
+        <div class="space-x-8 font-mono text-[10px] tracking-widest uppercase">
+            <a href="{{ url_for('home') }}#work" class="hover:text-[var(--neon-green)] transition-colors text-white">Work</a>
+            <a href="{{ url_for('about_page') }}" class="hover:text-[var(--neon-green)] transition-colors text-white">Studio</a>
+            <a href="mailto:hello@atomdev.com" class="border border-white/20 px-4 py-2 hover:border-[var(--neon-green)]">Connect outside</a>
+
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('admin') }}" class="text-[#00FF41] border-b border-[#00FF41]/30 pb-1">Master_Control</a>
+                <a href="{{ url_for('logout') }}" class="text-red-500 opacity-50 hover:opacity-100 transition-opacity">[X]</a>
+            {% else %}
+                <a href="{{ url_for('home') }}" class="border border-white/20 px-4 py-2 hover:border-[var(--neon-green)] text-white">Connect here</a>
+            {% endif %}
+        </div>
+        
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <script>
+        const cursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+        document.addEventListener('mousedown', () => cursor.style.transform = 'scale(0.8)');
+        document.addEventListener('mouseup', () => cursor.style.transform = 'scale(1)');
+
+        window.addEventListener('load', () => {
+            const bar = document.getElementById('progress'); // Corrected ID
+            const loader = document.getElementById('loader');
+        
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.style.display = 'none', 1000);
+                } else {
+                    width += Math.random() * 20;
+                    bar.style.width = width + '%';
+                }
+            }, 150);
+        });
+    </script>
+</body>
+</html>

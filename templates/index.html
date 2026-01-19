@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="min-h-screen pt-40 pb-20">
+
+    <div class="px-8 md:px-20 mb-32 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-8">
+            <h1 class="text-7xl md:text-[9rem] font-extrabold tracking-tighter italic uppercase leading-[0.8] mb-8 text-white">
+                THE <br> <span class="text-transparent" style="-webkit-text-stroke: 1px #00FF41;">MODERN DEVELOPER</span>
+            </h1>
+            <p class="text-zinc-500 font-mono text-xs tracking-[0.4em] uppercase">
+                // Atom De Legend Studios // Est {{ now.year }}
+            </p>
+        </div>
+
+        <div class="lg:col-span-4 relative group">
+            <div class="aspect-[4/5] bg-zinc-900 rounded-[2.5rem] overflow-hidden border border-zinc-800 transition-all duration-700 group-hover:border-[#00FF41] group-hover:-translate-y-2 shadow-2xl">
+                {% if f and f.profile_img %}
+                    <img src="{{ f.profile_img }}" alt="Samuel Peprah" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000">
+                {% else %}
+                    <div class="w-full h-full flex items-center justify-center bg-zinc-950 font-mono text-[10px] text-zinc-700 uppercase p-12 text-center">
+                        [ IMAGE_LINK_PENDING_IN_ADMIN ]
+                    </div>
+                {% endif %}
+            </div>
+            <div class="absolute -z-10 inset-0 bg-[#00FF41]/10 blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </div>
+    </div>
+
+    <div class="px-8 md:px-20 mb-6">
+        <a href="{{ url_for('about_page') }}" class="bento-card bg-zinc-900/10 border border-zinc-800 p-12 rounded-[3rem] group relative overflow-hidden flex flex-col justify-between">
+            <div class="relative z-10 max-w-4xl">
+                <h3 class="font-mono text-[10px] text-[#00FF41] mb-10 tracking-[0.5em] uppercase">// FOUNDER_IDENTITY</h3>
+    
+                <div class="space-y-8"> <p class="text-3xl md:text-5xl font-light leading-relaxed text-white group-hover:text-[#00FF41] transition-colors">
+                        Samuel Peprah, known in the digital space as 
+                        <span class="italic font-bold text-[#00FF41]">Atom De Legend</span>, 
+                        is a visionary software engineer and digital creator driven by purpose.
+                    </p>
+
+                    <p class="text-2xl md:text-3xl font-light leading-relaxed text-zinc-400 italic">
+                        He engineers systems where <span class="text-white">clean logic</span>, 
+                        <span class="text-white">human impact</span>, and 
+                        <span class="text-white">artful execution</span> converge—transforming ideas into intelligent platforms.
+                    </p>
+                </div>
+            </div>
+            <div class="flex justify-between items-center mt-12 relative z-10">
+                <span class="text-zinc-600 font-mono text-[10px] uppercase tracking-widest">Read_Full_Background.exe</span>
+                <div class="w-12 h-12 rounded-full border border-zinc-800 flex items-center justify-center group-hover:border-[#00FF41] transition-all">→</div>
+            </div>
+            <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-[#00FF41]/5 rounded-full blur-[100px] group-hover:bg-[#00FF41]/10 transition-all"></div>
+        </a>
+    </div>
+
+    <section id="about" class="grid grid-cols-1 md:grid-cols-4 gap-6 py-20 px-8 md:px-20">
+        <div class="md:col-span-3 bg-zinc-900/20 border border-zinc-800 p-10 md:p-20 rounded-[4rem]">
+            <h3 class="font-mono text-[10px] text-[#00FF41] mb-12 tracking-[0.5em] uppercase">// BRAND_IDENTITY</h3>
+    
+            <div class="space-y-10"> <h2 class="text-4xl md:text-6xl font-bold tracking-tighter text-white uppercase italic">
+                    Atom Dev Studios
+                </h2>
+
+                <p class="text-2xl md:text-4xl font-light leading-loose tracking-tight text-zinc-300">
+                    A modern web-focused studio specializing in 
+                    <span class="text-white border-b border-zinc-700">high-end websites</span> 
+                    and <span class="text-white border-b border-zinc-700">scalable web applications</span>.
+                </p>
+
+                <p class="text-lg md:text-xl font-mono text-zinc-500 leading-relaxed uppercase tracking-widest">
+                    // We blend clean architecture <br>
+                    // performance-driven development <br>
+                    // cinematic user interfaces
+                </p>
+            </div>
+        </div>
+    
+        <div class="flex flex-col gap-6">
+            {% if socials %}
+                {% for social in socials %}
+                    <a href="{{ social.url }}" target="_blank" class="flex-1 bg-black border border-zinc-900 rounded-[2rem] flex items-center justify-between px-8 hover:border-[#00FF41] transition-all group min-h-[80px]">
+                        <div class="flex items-center gap-4">
+                            <i class="fa-brands fa-{{ social.platform.lower() }} text-xl text-zinc-500 group-hover:text-[#00FF41]"></i>
+                            <span class="font-mono text-xs uppercase tracking-widest text-white group-hover:text-[#00FF41]">
+                                {{ social.platform }}
+                            </span>
+                        </div>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-zinc-800 group-hover:text-[#00FF41]"></i>
+                    </a>
+                {% endfor %}
+            {% else %}
+                <div class="flex-1 bg-zinc-900/10 border border-zinc-800 rounded-[2rem] flex items-center justify-center opacity-30 min-h-[80px]">
+                    <span class="font-mono text-[8px] uppercase tracking-widest text-white tracking-[0.3em]">No_Links_Active</span>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <section id="work" class="px-8 md:px-20 mb-20">
+        <h3 class="font-mono text-[10px] text-zinc-600 mb-8 tracking-[0.5em] uppercase text-center md:text-left">// SELECTED_ARCHIVES</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[300px]">
+            {% for p in projects %}
+            <a href="{{ url_for('project_detail', id=p.id) }}" class="{{ p.span }} bento-card bg-zinc-900/30 border border-zinc-800 rounded-[2.5rem] p-10 flex flex-col justify-between group hover:border-[#00FF41] transition-all duration-500 overflow-hidden relative">
+                <div class="relative z-10">
+                    <span class="text-[#00FF41] font-mono text-[10px] uppercase tracking-widest">{{ p.tag }}</span>
+                    <h2 class="text-4xl font-bold mt-4 italic tracking-tighter uppercase text-white leading-none">{{ p.title }}</h2>
+                </div>
+                <p class="text-zinc-500 text-sm font-light leading-relaxed max-w-xs relative z-10">{{ p.desc|truncate(120) }}</p>
+                
+                <div class="absolute -bottom-4 -right-2 text-white/[0.03] text-9xl font-black italic select-none group-hover:text-[#00FF41]/10 transition-colors">
+                    0{{ loop.index }}
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section id="contact" class="px-8 md:px-20">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 bg-zinc-900/10 border border-zinc-800 rounded-[3rem] p-10 lg:p-20">
+            <div>
+                <h2 class="text-6xl font-bold tracking-tighter italic uppercase mb-6 text-white">Let's <span class="text-[#00FF41]">Connect With Us</span></h2>
+                <p class="text-zinc-500 font-mono text-xs tracking-widest leading-loose uppercase">
+                    // initiate communication <br>
+                </p>
+            </div>
+
+            <form action="/contact" method="POST" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <input type="text" name="name" placeholder="IDENTIFIER / NAME" required class="bg-black border border-zinc-800 p-6 rounded-2xl w-full focus:border-[#00FF41] outline-none font-mono text-[10px] text-white transition-all">
+                    <input type="email" name="email" placeholder="COMM_CHNL / EMAIL" required class="bg-black border border-zinc-800 p-6 rounded-2xl w-full focus:border-[#00FF41] outline-none font-mono text-[10px] text-white transition-all">
+                </div>
+                <input type="text" name="subject" placeholder="SUBJECT" required class="bg-black border border-zinc-800 p-6 rounded-2xl w-full focus:border-[#00FF41] outline-none font-mono text-[10px] text-white transition-all">
+                <textarea name="message" placeholder="MESSAGE_BODY" required class="bg-black border border-zinc-800 p-6 rounded-2xl w-full focus:border-[#00FF41] outline-none font-mono text-[10px] text-white h-40 transition-all"></textarea>
+                <button type="submit" class="w-full bg-[#00FF41] text-black font-black py-6 rounded-2xl uppercase tracking-[0.5em] text-[10px] hover:bg-white hover:scale-[1.01] transition-all">INITIALIZE_SEND</button>
+            </form>
+        </div>
+    </section>
+
+</main>
+{% endblock %}

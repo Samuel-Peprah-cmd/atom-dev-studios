@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="min-h-screen flex items-center justify-center bg-[#050505] px-8">
+    
+    <div class="w-full max-w-xl relative">
+        <div class="absolute -inset-1 bg-gradient-to-r from-[#00FF41]/20 to-transparent blur-2xl opacity-30"></div>
+        
+        <div class="relative bg-zinc-900/10 border border-zinc-800 p-12 md:p-20 rounded-[4rem] backdrop-blur-3xl">
+            
+            <div class="text-center mb-16 space-y-4">
+                <h1 class="text-4xl md:text-5xl font-black tracking-tighter uppercase italic text-white leading-none">
+                    System <span class="text-[#00FF41]">Auth</span>
+                </h1>
+                <p class="font-mono text-[10px] text-zinc-600 uppercase tracking-[0.6em]">
+                    // restricted_environment_01
+                </p>
+            </div>
+
+            <form action="/login" method="POST" class="space-y-10">
+                <div class="space-y-3">
+                    <label class="font-mono text-[9px] text-zinc-500 uppercase tracking-widest ml-4">Identifier_Key</label>
+                    <input type="text" name="username" placeholder="NAME / ID" required 
+                           class="w-full bg-black border border-zinc-900 p-6 rounded-3xl outline-none text-white font-mono text-xs focus:border-[#00FF41] transition-all placeholder:opacity-20">
+                </div>
+                
+                <div class="space-y-3">
+                    <label class="font-mono text-[9px] text-zinc-500 uppercase tracking-widest ml-4">Access_Token</label>
+                    <input type="password" name="password" placeholder="••••••••" required 
+                           class="w-full bg-black border border-zinc-900 p-6 rounded-3xl outline-none text-white font-mono text-xs focus:border-[#00FF41] transition-all">
+                </div>
+                
+                <div class="pt-6">
+                    <button type="submit" class="w-full bg-[#00FF41] text-black font-black py-7 rounded-3xl uppercase tracking-[0.5em] text-[10px] hover:bg-white transition-all transform hover:scale-[1.02] active:scale-[0.98]">
+                        INITIALIZE_LOGIN
+                    </button>
+                </div>
+            </form>
+            
+            <div class="mt-12 text-center">
+                <a href="/" class="text-zinc-700 font-mono text-[8px] uppercase tracking-widest hover:text-white transition-colors">← Abort_Operation</a>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

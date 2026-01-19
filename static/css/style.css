@@ -1,0 +1,35 @@
+/* Scanline Effect */
+.scanlines {
+    background: linear-gradient(
+        to bottom,
+        rgba(18, 16, 16, 0) 50%,
+        rgba(0, 0, 0, 0.25) 50%
+    );
+    background-size: 100% 4px;
+}
+
+/* Glitch Button Effect */
+.glitch-btn {
+    position: relative;
+    overflow: hidden;
+}
+.glitch-btn:after {
+    content: "INITIALIZE";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--neon-green);
+    color: black;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+    display: flex; align-items: center; justify-content: center;
+}
+.glitch-btn:hover:after { transform: translateX(0); }
+
+/* Bento Card Hover */
+.bento-card {
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.bento-card:hover {
+    border-color: #00FF41;
+    box-shadow: 0 0 30px rgba(0, 255, 65, 0.1);
+}

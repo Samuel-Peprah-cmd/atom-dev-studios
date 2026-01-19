@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<article class="min-h-screen pt-40 px-8 md:px-20 pb-20">
+    <div class="max-w-6xl mx-auto">
+        <header class="mb-16 border-b border-zinc-800 pb-12">
+            <span class="text-[#00FF41] font-mono text-xs uppercase tracking-[0.5em] mb-4 block animate-pulse">
+                // VIEWING_ARCHIVE_{{ p.id }}
+            </span>
+            <h1 class="text-7xl md:text-9xl font-extrabold tracking-tighter italic uppercase leading-none">
+                {{ p.title }}
+            </h1>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-20">
+            <div class="lg:col-span-2">
+                <h3 class="font-mono text-[10px] text-zinc-500 mb-6 uppercase tracking-widest">// SPECIFICATIONS</h3>
+                <p class="text-2xl md:text-3xl font-light leading-relaxed text-zinc-300">
+                    {{ p.desc }}
+                </p>
+            </div>
+
+            <div class="space-y-12">
+                <div>
+                    <h3 class="font-mono text-[10px] text-zinc-500 mb-6 uppercase tracking-widest">// DEPLOYMENT_STATUS</h3>
+                    
+                    {% if p.live_link %}
+                        <a href="{{ p.live_link }}" target="_blank" class="block w-full bg-[#00FF41] text-black text-center font-bold py-4 rounded-full uppercase text-xs tracking-widest hover:bg-white transition-all">
+                            LAUNCH_LIVE_APP
+                        </a>
+                    {% else %}
+                        <div class="w-full bg-zinc-900 text-zinc-600 text-center font-mono py-4 rounded-full text-[10px] border border-zinc-800 uppercase tracking-widest">
+                            [ STATUS: YET_TO_BE_HOSTED ]
+                        </div>
+                    {% endif %}
+
+                    {% if p.repo_link %}
+                        <a href="{{ p.repo_link }}" target="_blank" class="block w-full border border-zinc-800 text-white text-center font-bold py-4 rounded-full uppercase text-xs tracking-widest hover:border-[#00FF41] transition-all mt-4">
+                            SOURCE_REPOSITORY
+                        </a>
+                    {% endif %}
+                </div>
+
+                <div class="pt-8 border-t border-zinc-900">
+                    <h3 class="font-mono text-[10px] text-zinc-500 mb-4 uppercase tracking-widest">// TAGS</h3>
+                    <span class="px-4 py-2 bg-zinc-900 rounded-full text-[10px] font-mono uppercase text-[#00FF41] border border-zinc-800">
+                        {{ p.tag }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+{% endblock %}

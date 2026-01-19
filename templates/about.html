@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="pt-40 px-8 md:px-20 pb-32 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-32 items-center">
+        <div class="relative">
+            <div class="aspect-square bg-zinc-900 rounded-[3rem] overflow-hidden border border-zinc-800">
+                <img src="{{ f.profile_img }}" alt="Samuel Peprah" class="w-full h-full object-cover grayscale brightness-50">
+            </div>
+            <div class="absolute -top-4 -left-4 bg-[#00FF41] text-black px-6 py-2 rounded-full font-mono text-[10px] font-bold uppercase tracking-widest">
+                DEVELOPER_ID: 001
+            </div>
+        </div>
+        
+        <div>
+            <span class="text-[#00FF41] font-mono text-[10px] tracking-[0.5em] uppercase mb-6 block">// EXECUTIVE_SUMMARY</span>
+            <h1 class="text-6xl md:text-8xl font-black italic tracking-tighter uppercase mb-8">{{ f.full_name }}</h1>
+            <p class="text-zinc-400 text-xl font-light leading-relaxed mb-10">{{ f.bio_content }}</p>
+            
+            <div class="overflow-hidden bg-zinc-900/50 border-y border-zinc-800 py-6">
+                <div class="flex gap-12 whitespace-nowrap animate-marquee">
+                    {% for tech in f.stack_list.split(',') %}
+                    <span class="text-white font-mono text-xs uppercase tracking-widest">{{ tech.strip() }}</span>
+                    {% endfor %}
+                    {% for tech in f.stack_list.split(',') %}
+                    <span class="text-[#00FF41] font-mono text-xs uppercase tracking-widest">{{ tech.strip() }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-16 border-t border-zinc-900 pt-20">
+       <div>
+            <h3 class="text-4xl font-bold italic tracking-tighter uppercase mb-12">System <span class="text-[#00FF41]">Output</span></h3>
+    
+            {% set total = f.completed + f.progress %}
+    
+            <div class="mb-10">
+                <div class="flex justify-between font-mono text-[10px] mb-2 uppercase tracking-widest">
+                    <span>Completed_Projects</span>
+                    <span>{{ f.completed }} Units</span>
+                </div>
+                <div class="h-2 w-full bg-zinc-900 rounded-full overflow-hidden">
+                    <div class="h-full bg-[#00FF41]" style="width: {{ (f.completed / total * 100) if total > 0 else 0 }}%"></div>
+                </div>
+            </div>  
+
+            <div class="mb-10">
+                <div class="flex justify-between font-mono text-[10px] mb-2 uppercase tracking-widest">
+                    <span>Global_Deployments (Hosted)</span>
+                    <span>{{ f.hosted }} Live</span>
+                </div>
+                <div class="h-2 w-full bg-zinc-900 rounded-full overflow-hidden">
+                    <div class="h-full bg-white" style="width: {{ (f.hosted / f.completed * 100) if f.completed > 0 else 0 }}%"></div>
+                </div>
+            </div>
+
+            <div>
+                <div class="flex justify-between font-mono text-[10px] mb-2 uppercase tracking-widest">
+                    <span>Active_Development</span>
+                    <span>{{ f.progress }} Ongoing</span>
+                </div>
+                <div class="h-2 w-full bg-zinc-900 rounded-full overflow-hidden">
+                    <div class="h-full bg-zinc-700 animate-pulse" style="width: {{ (f.progress / total * 100) if total > 0 else 0 }}%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-[#00FF41] text-black p-12 rounded-[3rem] flex flex-col justify-between">
+            <h4 class="text-5xl font-black tracking-tighter italic uppercase leading-none">Ready for <br> Integration.</h4>
+            <p class="font-mono text-xs uppercase font-bold tracking-widest mt-8">Atom Dev Studios is currently open for high-stakes collaborations and engineering roles.</p>
+            <a href="mailto:hello@atomdev.com" class="mt-12 inline-block border-2 border-black px-10 py-4 rounded-full font-bold uppercase text-xs hover:bg-black hover:text-white transition-all text-center">Open_Channel</a>
+        </div>
+    </div>
+</main>
+
+<style>
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+    animation: marquee 20s linear infinite;
+}
+</style>
+{% endblock %}
