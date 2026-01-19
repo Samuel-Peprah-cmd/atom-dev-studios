@@ -20,7 +20,15 @@ app.secret_key = os.getenv('SECRET_KEY')
 # Handle Database Path
 basedir = os.path.abspath(os.path.dirname(__file__))
 # Fallback to local sqlite if DATABASE_URL isn't found
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///' + os.path.join(basedir, 'studio.db'))
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///' + os.path.join(basedir, 'studio.db'))
+
+# --- DATABASE CONFIG ---
+uri = os.getenv("DATABASE_URL")
+if uri and uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = uri or ('sqlite:///' + os.path.join(basedir, 'studio.db'))
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # --- EMAIL SETTINGS ---
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -82,6 +90,16 @@ class About(db.Model):
     completed = db.Column(db.Integer, default=0)
     progress = db.Column(db.Integer, default=0)
     hosted = db.Column(db.Integer, default=0)
+
+with app.app_context():
+    db.create_all()
+    # Check for Admin User
+    existing_user = User.query.filter_by(username='Atom-Dev-Studios').first()
+    if not existing_user:
+        admin_user = User(username='Atom-Dev-Studios', password='samuelkofipeprah1')
+        db.session.add(admin_user)
+        db.session.commit()
+        print(">>> SECURITY: Production Admin user created.")
 
 # --- INITIALIZE LOGIN MANAGER ---
 login_manager = LoginManager()
@@ -281,15 +299,15 @@ def delete_social(id):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-        # FIX: Explicitly check if the username exists before trying to add it
-        existing_user = User.query.filter_by(username='Atom-Dev-Studios').first()
+        # # FIX: Explicitly check if the username exists before trying to add it
+        # existing_user = User.query.filter_by(username='Atom-Dev-Studios').first()
         
-        if not existing_user:
-            admin_user = User(username='Atom-Dev-Studios', password='samuelkofipeprah1')
-            db.session.add(admin_user)
-            db.session.commit()
-            print(">>> SECURITY: Admin user created.")
-        else:
-            print(">>> SECURITY: Admin user already exists. Skipping creation.")
-    # app.run(host='0.0.0.0', port=7860)
-    app.run(debug=True)
+        # if not existing_user:
+        #     admin_user = User(username='Atom-Dev-Studios', password='samuelkofipeprah1')
+        #     db.session.add(admin_user)
+        #     db.session.commit()
+        #     print(">>> SECURITY: Admin user created.")
+        # else:
+        #     print(">>> SECURITY: Admin user already exists. Skipping creation.")
+    app.run(host='0.0.0.0', port=7860)
+    # app.run(debug=True)
