@@ -1,0 +1,18 @@
+# Security
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+ENV/
+
+# Database
+studio.db
+
+# Uploads (Optional: Don't upload local test photos)
+static/uploads/*
+
+# OS specific
+.DS_Store

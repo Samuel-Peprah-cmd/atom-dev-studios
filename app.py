@@ -5,21 +5,29 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import os
+from dotenv import load_dotenv
+
+# Load the variables from .env
+load_dotenv()
 
 app = Flask(__name__)
 UPLOAD_FOLDER = os.path.join('static', 'uploads')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.secret_key = 'atom-dev-studios-super-secret-key-2026'
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'studio.db')
+# --- APP CONFIGURATION ---
+app.secret_key = os.getenv('SECRET_KEY')
 
-# EMAIL SETTINGS (Update these with your real info)
+# Handle Database Path
+basedir = os.path.abspath(os.path.dirname(__file__))
+# Fallback to local sqlite if DATABASE_URL isn't found
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///' + os.path.join(basedir, 'studio.db'))
+
+# --- EMAIL SETTINGS ---
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'skapeprah@gmail.com'
-app.config['MAIL_PASSWORD'] = 'ybda ahpg knct hife'
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_DEFAULT_SENDER'] = app.config['MAIL_USERNAME']
 
 db = SQLAlchemy(app)
@@ -283,5 +291,5 @@ if __name__ == '__main__':
             print(">>> SECURITY: Admin user created.")
         else:
             print(">>> SECURITY: Admin user already exists. Skipping creation.")
-    app.run(host='0.0.0.0', port=7860)
-    # app.run(debug=True)
+    # app.run(host='0.0.0.0', port=7860)
+    app.run(debug=True)
