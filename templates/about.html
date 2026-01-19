@@ -1,75 +1,95 @@
 {% extends 'base.html' %}
 {% block content %}
-<main class="pt-40 px-8 md:px-20 pb-32 max-w-7xl mx-auto">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-32 items-center">
-        <div class="relative">
-            <div class="aspect-square bg-zinc-900 rounded-[3rem] overflow-hidden border border-zinc-800">
+<main class="pt-24 md:pt-40 px-4 md:px-20 pb-20 md:pb-32 max-w-7xl mx-auto">
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-20 mb-20 md:mb-32 items-center">
+        
+        <div class="relative order-1 lg:order-none">
+            <div class="aspect-square bg-zinc-900 rounded-[2rem] md:rounded-[3rem] overflow-hidden border border-zinc-800">
                 <img src="{{ f.profile_img }}" alt="Samuel Peprah" class="w-full h-full object-cover grayscale brightness-50">
             </div>
-            <div class="absolute -top-4 -left-4 bg-[#00FF41] text-black px-6 py-2 rounded-full font-mono text-[10px] font-bold uppercase tracking-widest">
+            <div class="absolute -top-3 -left-3 md:-top-4 md:-left-4 bg-[#00FF41] text-black px-4 md:px-6 py-1 md:py-2 rounded-full font-mono text-[8px] md:text-[10px] font-bold uppercase tracking-widest">
                 DEVELOPER_ID: 001
             </div>
         </div>
         
         <div>
-            <span class="text-[#00FF41] font-mono text-[10px] tracking-[0.5em] uppercase mb-6 block">// EXECUTIVE_SUMMARY</span>
-            <h1 class="text-6xl md:text-8xl font-black italic tracking-tighter uppercase mb-8">{{ f.full_name }}</h1>
-            <p class="text-zinc-400 text-xl font-light leading-relaxed mb-10">{{ f.bio_content }}</p>
+            <span class="text-[#00FF41] font-mono text-[8px] md:text-[10px] tracking-[0.3em] md:tracking-[0.5em] uppercase mb-4 md:mb-6 block text-center md:text-left">
+                // EXECUTIVE_SUMMARY
+            </span>
+            <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-8xl font-black italic tracking-tighter uppercase mb-6 md:mb-8 text-center md:text-left leading-none">
+                {{ f.full_name }}
+            </h1>
+            <p class="text-zinc-400 text-base md:text-xl font-light leading-relaxed mb-8 md:mb-10 text-center md:text-left">
+                {{ f.bio_content }}
+            </p>
             
-            <div class="overflow-hidden bg-zinc-900/50 border-y border-zinc-800 py-6">
-                <div class="flex gap-12 whitespace-nowrap animate-marquee">
+            <div class="overflow-hidden bg-zinc-900/50 border-y border-zinc-800 py-4 md:py-6">
+                <div class="flex gap-8 md:gap-12 whitespace-nowrap animate-marquee">
                     {% for tech in f.stack_list.split(',') %}
-                    <span class="text-white font-mono text-xs uppercase tracking-widest">{{ tech.strip() }}</span>
+                    <span class="text-white font-mono text-[9px] md:text-xs uppercase tracking-widest">{{ tech.strip() }}</span>
                     {% endfor %}
                     {% for tech in f.stack_list.split(',') %}
-                    <span class="text-[#00FF41] font-mono text-xs uppercase tracking-widest">{{ tech.strip() }}</span>
+                    <span class="text-[#00FF41] font-mono text-[9px] md:text-xs uppercase tracking-widest">{{ tech.strip() }}</span>
                     {% endfor %}
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-16 border-t border-zinc-900 pt-20">
-       <div>
-            <h3 class="text-4xl font-bold italic tracking-tighter uppercase mb-12">System <span class="text-[#00FF41]">Output</span></h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 border-t border-zinc-900 pt-16 md:pt-20">
+       
+        <div>
+            <h3 class="text-3xl md:text-4xl font-bold italic tracking-tighter uppercase mb-8 md:mb-12">
+                System <span class="text-[#00FF41]">Output</span>
+            </h3>
     
             {% set total = f.completed + f.progress %}
     
-            <div class="mb-10">
-                <div class="flex justify-between font-mono text-[10px] mb-2 uppercase tracking-widest">
+            <div class="mb-8">
+                <div class="flex justify-between font-mono text-[8px] md:text-[10px] mb-2 uppercase tracking-widest">
                     <span>Completed_Projects</span>
                     <span>{{ f.completed }} Units</span>
                 </div>
-                <div class="h-2 w-full bg-zinc-900 rounded-full overflow-hidden">
+                <div class="h-1.5 md:h-2 w-full bg-zinc-900 rounded-full overflow-hidden">
                     <div class="h-full bg-[#00FF41]" style="width: {{ (f.completed / total * 100) if total > 0 else 0 }}%"></div>
                 </div>
             </div>  
 
-            <div class="mb-10">
-                <div class="flex justify-between font-mono text-[10px] mb-2 uppercase tracking-widest">
-                    <span>Global_Deployments (Hosted)</span>
+            <div class="mb-8">
+                <div class="flex justify-between font-mono text-[8px] md:text-[10px] mb-2 uppercase tracking-widest">
+                    <span>Global_Deployments</span>
                     <span>{{ f.hosted }} Live</span>
                 </div>
-                <div class="h-2 w-full bg-zinc-900 rounded-full overflow-hidden">
+                <div class="h-1.5 md:h-2 w-full bg-zinc-900 rounded-full overflow-hidden">
                     <div class="h-full bg-white" style="width: {{ (f.hosted / f.completed * 100) if f.completed > 0 else 0 }}%"></div>
                 </div>
             </div>
 
-            <div>
-                <div class="flex justify-between font-mono text-[10px] mb-2 uppercase tracking-widest">
+            <div class="mb-0 md:mb-10">
+                <div class="flex justify-between font-mono text-[8px] md:text-[10px] mb-2 uppercase tracking-widest">
                     <span>Active_Development</span>
                     <span>{{ f.progress }} Ongoing</span>
                 </div>
-                <div class="h-2 w-full bg-zinc-900 rounded-full overflow-hidden">
+                <div class="h-1.5 md:h-2 w-full bg-zinc-900 rounded-full overflow-hidden">
                     <div class="h-full bg-zinc-700 animate-pulse" style="width: {{ (f.progress / total * 100) if total > 0 else 0 }}%"></div>
                 </div>
             </div>
         </div>
 
-        <div class="bg-[#00FF41] text-black p-12 rounded-[3rem] flex flex-col justify-between">
-            <h4 class="text-5xl font-black tracking-tighter italic uppercase leading-none">Ready for <br> Integration.</h4>
-            <p class="font-mono text-xs uppercase font-bold tracking-widest mt-8">Atom Dev Studios is currently open for high-stakes collaborations and engineering roles.</p>
-            <a href="mailto:hello@atomdev.com" class="mt-12 inline-block border-2 border-black px-10 py-4 rounded-full font-bold uppercase text-xs hover:bg-black hover:text-white transition-all text-center">Open_Channel</a>
+        <div class="bg-[#00FF41] text-black p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] flex flex-col justify-between min-h-[300px]">
+            <div>
+                <h4 class="text-4xl md:text-5xl font-black tracking-tighter italic uppercase leading-none">
+                    Ready for <br class="hidden md:block"> Integration.
+                </h4>
+                <p class="font-mono text-[9px] md:text-xs uppercase font-bold tracking-widest mt-6 md:mt-8">
+                    Currently open for high-stakes collaborations and engineering roles.
+                </p>
+            </div>
+            <a href="mailto:hello@atomdev.com" 
+               class="mt-8 md:mt-12 inline-block border-2 border-black px-8 md:px-10 py-3 md:py-4 rounded-full font-bold uppercase text-[10px] hover:bg-black hover:text-white transition-all text-center">
+                Open_Channel
+            </a>
         </div>
     </div>
 </main>
@@ -81,6 +101,10 @@
 }
 .animate-marquee {
     animation: marquee 20s linear infinite;
+}
+/* Ensure mobile animation is smooth */
+@media (max-width: 768px) {
+    .animate-marquee { animation-duration: 15s; }
 }
 </style>
 {% endblock %}

@@ -1,72 +1,87 @@
 {% extends 'base.html' %}
 {% block content %}
-<main class="pt-32 px-8 md:px-20 min-h-screen bg-[#080808] pb-20">
-    <div class="flex justify-between items-end mb-12 border-b border-zinc-800 pb-8 text-white">
-        <h1 class="text-4xl font-bold italic tracking-tighter uppercase">Command_Center</h1>
-        <a href="/" class="text-xs font-mono text-zinc-500 hover:text-[#00FF41]">← TERMINATE_SESSION</a>
+<main class="pt-24 md:pt-32 px-4 md:px-20 min-h-screen bg-[#080808] pb-20">
+    
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 border-b border-zinc-800 pb-8 text-white gap-4">
+        <div>
+            <h1 class="text-3xl md:text-4xl font-bold italic tracking-tighter uppercase">Command_Center</h1>
+            <p class="text-[10px] font-mono text-zinc-500 mt-2">// ROOT_ACCESS_GRANTED</p>
+        </div>
+        <a href="/" class="text-[10px] font-mono text-zinc-500 hover:text-[#00FF41] border border-zinc-800 px-3 py-1 rounded-md md:border-none md:p-0">
+            ← TERMINATE_SESSION
+        </a>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-        <div class="bg-zinc-900/30 p-8 border border-zinc-800 rounded-[2rem]">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
+        
+        <div class="bg-zinc-900/30 p-6 md:p-8 border border-zinc-800 rounded-[1.5rem] md:rounded-[2rem]">
             <h3 class="font-mono text-[10px] text-[#00FF41] mb-6 tracking-widest uppercase">// DEPLOY_NEW_WORK</h3>
             <form action="/admin" method="POST" class="space-y-4">
-                <input type="text" name="title" placeholder="Project Title" required class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-sm">
-                <input type="text" name="tag" placeholder="Category" required class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-sm">
-                <select name="span" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-zinc-400 text-sm">
+                <input type="text" name="title" placeholder="Project Title" required class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-sm focus:border-[#00FF41] outline-none">
+                <input type="text" name="tag" placeholder="Category" required class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-sm focus:border-[#00FF41] outline-none">
+                <select name="span" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-zinc-400 text-sm focus:border-[#00FF41] outline-none">
                     <option value="col-span-1">Small (1x1)</option>
                     <option value="md:col-span-2">Wide (2x1)</option>
                     <option value="md:col-span-2 md:row-span-2">Large (2x2)</option>
                 </select>
-                <input type="url" name="live_link" placeholder="Live URL" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-sm">
-                <input type="url" name="repo_link" placeholder="Repo URL" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-sm">
-                <textarea name="desc" placeholder="Description" required class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-sm h-32"></textarea>
-                <button type="submit" class="w-full bg-[#00FF41] text-black font-bold py-4 rounded-xl uppercase tracking-widest text-xs">Execute_Upload</button>
+                <input type="url" name="live_link" placeholder="Live URL" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-sm focus:border-[#00FF41] outline-none">
+                <input type="url" name="repo_link" placeholder="Repo URL" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-sm focus:border-[#00FF41] outline-none">
+                <textarea name="desc" placeholder="Description" required class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-sm h-32 focus:border-[#00FF41] outline-none"></textarea>
+                <button type="submit" class="w-full bg-[#00FF41] text-black font-bold py-4 rounded-xl uppercase tracking-widest text-xs active:scale-95 transition-transform">Execute_Upload</button>
             </form>
         </div>
 
-        <div class="bg-zinc-900/30 p-8 border border-zinc-800 rounded-[2rem]">
+        <div class="bg-zinc-900/30 p-6 md:p-8 border border-zinc-800 rounded-[1.5rem] md:rounded-[2rem]">
             <h3 class="font-mono text-[10px] text-[#00FF41] mb-6 tracking-widest uppercase">// SYSTEM_CALIBRATION</h3>
             <form action="/admin" method="POST" enctype="multipart/form-data" class="space-y-4">
                 <input type="hidden" name="update_about" value="1">
                 <div>
-                    <label class="block text-zinc-500 font-mono text-[10px] mb-2 uppercase ml-2">Studio_Logo_Upload</label>
-                    <input type="file" name="logo_file" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-xs">
+                    <label class="block text-zinc-500 font-mono text-[9px] mb-2 uppercase ml-2">Studio_Logo</label>
+                    <input type="file" name="logo_file" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-[10px] file:bg-zinc-800 file:text-white file:border-none file:rounded-md file:mr-4">
                 </div>
 
                 <div>
-                    <label class="block text-zinc-500 font-mono text-[10px] mb-2 uppercase ml-2">Founder_Portrait_Upload</label>
-                    <input type="file" name="profile_file" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-xs">
+                    <label class="block text-zinc-500 font-mono text-[9px] mb-2 uppercase ml-2">Founder_Portrait</label>
+                    <input type="file" name="profile_file" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-[10px] file:bg-zinc-800 file:text-white file:border-none file:rounded-md file:mr-4">
                 </div>
 
                 <div class="grid grid-cols-3 gap-2">
-                    <input type="number" name="completed" placeholder="Done" value="{{ f.completed if f }}" class="bg-black border border-zinc-800 p-3 rounded-xl text-white text-xs text-center">
-                    <input type="number" name="progress" placeholder="In-Dev" value="{{ f.progress if f }}" class="bg-black border border-zinc-800 p-3 rounded-xl text-white text-xs text-center">
-                    <input type="number" name="hosted" placeholder="Live" value="{{ f.hosted if f }}" class="bg-black border border-zinc-800 p-3 rounded-xl text-white text-xs text-center">
+                    <div class="flex flex-col gap-1">
+                        <span class="text-[8px] text-zinc-600 text-center font-mono">DONE</span>
+                        <input type="number" name="completed" value="{{ f.completed if f }}" class="bg-black border border-zinc-800 p-3 rounded-xl text-white text-xs text-center">
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <span class="text-[8px] text-zinc-600 text-center font-mono">DEV</span>
+                        <input type="number" name="progress" value="{{ f.progress if f }}" class="bg-black border border-zinc-800 p-3 rounded-xl text-white text-xs text-center">
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <span class="text-[8px] text-zinc-600 text-center font-mono">LIVE</span>
+                        <input type="number" name="hosted" value="{{ f.hosted if f }}" class="bg-black border border-zinc-800 p-3 rounded-xl text-white text-xs text-center">
+                    </div>
                 </div>
-                <textarea name="stack_list" placeholder="Stack (Comma Separated)" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-sm h-20">{{ f.stack_list if f }}</textarea>
-                <textarea name="bio_content" placeholder="Founder Bio" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-sm h-32">{{ f.bio_content if f }}</textarea>
+                <textarea name="stack_list" placeholder="Stack (Comma Separated)" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-sm h-20 focus:border-[#00FF41] outline-none">{{ f.stack_list if f }}</textarea>
+                <textarea name="bio_content" placeholder="Founder Bio" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-sm h-32 focus:border-[#00FF41] outline-none">{{ f.bio_content if f }}</textarea>
 
-                <button type="submit" class="w-full bg-white text-black font-bold py-4 rounded-xl uppercase tracking-widest text-xs hover:bg-[#00FF41]">Initialize_Local_Sync</button>
+                <button type="submit" class="w-full bg-white text-black font-bold py-4 rounded-xl uppercase tracking-widest text-xs hover:bg-[#00FF41] active:scale-95 transition-all">Initialize_Sync</button>
             </form>
         </div>
 
-        <div class="bg-zinc-900/30 p-8 border border-zinc-800 rounded-[2rem]">
+        <div class="bg-zinc-900/30 p-6 md:p-8 border border-zinc-800 rounded-[1.5rem] md:rounded-[2rem]">
             <h3 class="font-mono text-[10px] text-[#00FF41] mb-6 tracking-widest uppercase">// LINK_MANAGER</h3>
             <form action="/admin" method="POST" class="space-y-4 mb-8">
-                <input type="text" name="platform" placeholder="Platform (e.g. GitHub)" required class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-sm">
-                <input type="url" name="url" placeholder="URL" required class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-sm">
-                <button type="submit" class="w-full border border-[#00FF41] text-[#00FF41] font-bold py-4 rounded-xl uppercase tracking-widest text-xs">Add_Link</button>
+                <input type="text" name="platform" placeholder="Platform (e.g. GitHub)" required class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-sm focus:border-[#00FF41] outline-none">
+                <input type="url" name="url" placeholder="URL" required class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-sm focus:border-[#00FF41] outline-none">
+                <button type="submit" class="w-full border border-[#00FF41] text-[#00FF41] font-bold py-4 rounded-xl uppercase tracking-widest text-xs active:bg-[#00FF41] active:text-black">Add_Link</button>
             </form>
-            <div class="space-y-2 mt-6">
+            
+            <div class="space-y-3 mt-6 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
                 {% for s in socials %}
-                    <div class="flex justify-between items-center p-3 bg-black/50 border border-zinc-900 rounded-xl group">
+                    <div class="flex justify-between items-center p-4 bg-black/50 border border-zinc-900 rounded-xl">
                         <div class="flex items-center gap-3">
-                            <i class="fa-brands fa-{{ s.platform.lower() }} text-[#00FF41]"></i>
-                            <div class="flex flex-col">
-                                <span class="text-[10px] font-mono text-white uppercase">{{ s.platform }}</span>
-                            </div>
+                            <i class="fa-brands fa-{{ s.platform.lower() }} text-[#00FF41] text-lg"></i>
+                            <span class="text-[10px] font-mono text-white uppercase">{{ s.platform }}</span>
                         </div>
-                        <a href="{{ url_for('delete_social', id=s.id) }}" class="text-zinc-800 group-hover:text-red-500 font-mono text-[10px]"> [DELETE] </a>
+                        <a href="{{ url_for('delete_social', id=s.id) }}" class="text-red-900 hover:text-red-500 font-mono text-[9px] uppercase tracking-tighter"> [DEL] </a>
                     </div>
                 {% endfor %}
             </div>

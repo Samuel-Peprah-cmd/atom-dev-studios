@@ -20,15 +20,22 @@ app.secret_key = os.getenv('SECRET_KEY')
 # Handle Database Path
 basedir = os.path.abspath(os.path.dirname(__file__))
 # Fallback to local sqlite if DATABASE_URL isn't found
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///' + os.path.join(basedir, 'studio.db'))
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///' + os.path.join(basedir, 'studio.db'))
 
-# --- DATABASE CONFIG ---
-uri = os.getenv("DATABASE_URL")
-if uri and uri.startswith("postgres://"):
-    uri = uri.replace("postgres://", "postgresql://", 1)
+# uri = os.environ.get("DATABASE_URL") 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = uri or ('sqlite:///' + os.path.join(basedir, 'studio.db'))
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# if uri:
+#     # Fix the 'postgres://' vs 'postgresql://' issue
+#     if uri.startswith("postgres://"):
+#         uri = uri.replace("postgres://", "postgresql://", 1)
+#     # Ensure there are no hidden spaces or quotes
+#     app.config['SQLALCHEMY_DATABASE_URI'] = uri.strip().replace("'", "").replace('"', "")
+# else:
+#     # Fallback for local development
+#     basedir = os.path.abspath(os.path.dirname(__file__))
+#     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'studio.db')
+
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # --- EMAIL SETTINGS ---
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -91,15 +98,15 @@ class About(db.Model):
     progress = db.Column(db.Integer, default=0)
     hosted = db.Column(db.Integer, default=0)
 
-with app.app_context():
-    db.create_all()
-    # Check for Admin User
-    existing_user = User.query.filter_by(username='Atom-Dev-Studios').first()
-    if not existing_user:
-        admin_user = User(username='Atom-Dev-Studios', password='samuelkofipeprah1')
-        db.session.add(admin_user)
-        db.session.commit()
-        print(">>> SECURITY: Production Admin user created.")
+# with app.app_context():
+#     db.create_all()
+#     # Check for Admin User
+#     existing_user = User.query.filter_by(username='Atom-Dev-Studios').first()
+#     if not existing_user:
+#         admin_user = User(username='Atom-Dev-Studios', password='samuelkofipeprah1')
+#         db.session.add(admin_user)
+#         db.session.commit()
+#         print(">>> SECURITY: Production Admin user created.")
 
 # --- INITIALIZE LOGIN MANAGER ---
 login_manager = LoginManager()
@@ -199,17 +206,15 @@ def contact():
 @login_required
 def admin():
     if request.method == 'POST':
+        # 1. Handle About/System Calibration
         if 'update_about' in request.form:
             f = About.query.first() or About()
             
-            # CHECK FOR FILE UPLOAD
             if 'profile_file' in request.files:
                 file = request.files['profile_file']
                 if file and allowed_file(file.filename):
                     filename = secure_filename(file.filename)
-                    # Save to the static/uploads folder
                     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                    # Save the URL path in the database
                     f.profile_img = f"/static/uploads/{filename}"
 
             if 'logo_file' in request.files:
@@ -219,7 +224,6 @@ def admin():
                     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                     f.logo_url = f"/static/uploads/{filename}"
 
-            # Standard text fields
             f.stack_list = request.form.get('stack_list')
             f.completed = int(request.form.get('completed') or 0)
             f.progress = int(request.form.get('progress') or 0)
@@ -227,9 +231,21 @@ def admin():
             f.bio_content = request.form.get('bio_content')
             
             db.session.add(f)
-            db.session.commit()
-            flash("SYSTEM_SYNC: Local files and data secured.", "success")
-            
+            flash("SYSTEM_SYNC: Calibration data secured.", "success")
+
+        # 2. Handle New Project (THIS WAS MISSING)
+        elif 'title' in request.form:
+            new_p = Project(
+                title=request.form['title'],
+                tag=request.form['tag'],
+                desc=request.form['desc'],
+                span=request.form['span'],
+                live_link=request.form.get('live_link'),
+                repo_link=request.form.get('repo_link')
+            )
+            db.session.add(new_p)
+            flash("PROJECT_DEPLOYED: Archive entry created.", "success")
+
         # 3. Handle New Social Link
         elif 'platform' in request.form:
             new_s = Social(
@@ -237,20 +253,18 @@ def admin():
                 url=request.form['url']
             )
             db.session.add(new_s)
+            flash("LINK_ESTABLISHED: Social channel secured.", "success")
             
-        # Commit the changes (removed the extra db.session.add(f) from here)
+        # Final Commit for all POST actions
         db.session.commit()
-        flash("SYSTEM_UPDATED: Database synchronized.", "success")
         return redirect(url_for('admin'))
     
     # GET Request logic
-    projects = Project.query.all()
-    socials = Social.query.all()
-    f = About.query.first()
-    messages = ContactMessage.query.all()
-    
-    return render_template('admin.html', projects=Project.query.all(), socials=Social.query.all(), f=About.query.first())
-
+    return render_template('admin.html', 
+                           projects=Project.query.all(), 
+                           socials=Social.query.all(), 
+                           f=About.query.first(),
+                           messages=ContactMessage.query.all())
 @app.route('/project/delete/<int:id>')
 def delete_project(id):
     p = Project.query.get(id)
@@ -299,15 +313,15 @@ def delete_social(id):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-        # # FIX: Explicitly check if the username exists before trying to add it
-        # existing_user = User.query.filter_by(username='Atom-Dev-Studios').first()
+        # FIX: Explicitly check if the username exists before trying to add it
+        existing_user = User.query.filter_by(username='Atom-Dev-Studios').first()
         
-        # if not existing_user:
-        #     admin_user = User(username='Atom-Dev-Studios', password='samuelkofipeprah1')
-        #     db.session.add(admin_user)
-        #     db.session.commit()
-        #     print(">>> SECURITY: Admin user created.")
-        # else:
-        #     print(">>> SECURITY: Admin user already exists. Skipping creation.")
-    app.run(host='0.0.0.0', port=7860)
-    # app.run(debug=True)
+        if not existing_user:
+            admin_user = User(username='Atom-Dev-Studios', password='samuelkofipeprah1')
+            db.session.add(admin_user)
+            db.session.commit()
+            print(">>> SECURITY: Admin user created.")
+        else:
+            print(">>> SECURITY: Admin user already exists. Skipping creation.")
+    # app.run(host='0.0.0.0', port=7860)
+    app.run(debug=True)
